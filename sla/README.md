@@ -1,4 +1,4 @@
-# Software License Agreement for Pandora
+## Software License Agreement
 
 By acquiring, installing and using Pandora, you are agree to be bound with Pandora's Software License Agreement (or the "SLA").
 

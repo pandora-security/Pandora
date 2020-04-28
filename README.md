@@ -26,13 +26,13 @@ You may install the latest available version of Pandora by running one of the fo
 
 **via `curl`**:
 
-```shell script
+```bash
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/danang-id/Pandora/master/scripts/install_unix.sh)"
 ```
 
 **via `wget`**:
 
-```shell script
+```bash
 sh -c "$(wget -O- https://raw.githubusercontent.com/danang-id/Pandora/master/scripts/install_unix.sh)"
 ```
 

@@ -6,7 +6,7 @@ Pandora Security Box is a proprietary security library which helps certain pre-r
 
 [![Latest Version](https://img.shields.io/github/release/danang-id/Pandora.svg)](https://danang-id.github.io/Pandora/download)
 
-Latest Available Version: v0.1.0 (28 April 2020)
+**Latest Available Version: v0.1.0 (28 April 2020)**
 
 ### Windows
 
@@ -41,6 +41,10 @@ sh -c "$(wget -O- https://raw.githubusercontent.com/danang-id/Pandora/master/scr
 **Copyright © 2020 Danang Galuh Tegar Prasetyo. All right reserved.**
 
 By acquiring, installing and using Pandora, you are agree to be bound with Pandora's Software License Agreement (or the "SLA"). To read and/or acquire a copy of, please visit [the SLA page for Pandora](https://danang-id.github.io/Pandora/sla).
+
+## Supported Applications
+
+The list of supported application will be populated once Pandora stable version has been released. For now, application shall state their requirement about Pandora on their official channel.
 
 ## Implements Pandora
 

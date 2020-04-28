@@ -2,7 +2,7 @@
 
 [![Latest Version](https://img.shields.io/github/release/danang-id/Pandora.svg)](https://danang-id.github.io/Pandora/download)
 
-Latest Available Version: v0.1.0 (28 April 2020)
+**Latest Available Version: v0.1.0 (28 April 2020)**
 
 For macOS and Linux users, please follow the installation instruction described in [here](https://danang-id.github.io/Pandora/scripts).
 

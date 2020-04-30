@@ -4,7 +4,7 @@ Pandora Security Box is a proprietary security library which helps certain pre-r
 
 ## Download & Install
 
-[![Latest Version](https://img.shields.io/github/release/danang-id/Pandora.svg)](https://danang-id.github.io/Pandora/download)
+[![Latest Version](https://img.shields.io/github/release/pandora-security/Pandora.svg)](https://pandora-security.github.io/Pandora/download)
 
 **Latest Available Version: v0.1.0 (28 April 2020)**
 
@@ -14,7 +14,7 @@ System Requirement:
  * OS: Windows XP or later
  * Architecture: 32-bit or 64-bit
 
-You can download from the [Download page](https://danang-id.github.io/Pandora/download). To install, simply open the downloaded file and follow the installation instruction.
+You can download from the [Download page](https://pandora-security.github.io/Pandora/download). To install, simply open the downloaded file and follow the installation instruction.
 
 ### macOS and Linux
 
@@ -27,20 +27,20 @@ You may install the latest available version of Pandora by running one of the fo
 **via `curl`**:
 
 ```bash
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/danang-id/Pandora/master/scripts/install_unix.sh)"
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/pandora-security/Pandora/master/scripts/install_unix.sh)"
 ```
 
 **via `wget`**:
 
 ```bash
-sh -c "$(wget -O- https://raw.githubusercontent.com/danang-id/Pandora/master/scripts/install_unix.sh)"
+sh -c "$(wget -O- https://raw.githubusercontent.com/pandora-security/Pandora/master/scripts/install_unix.sh)"
 ```
 
 ## License
 
 **Copyright © 2020 Danang Galuh Tegar Prasetyo. All right reserved.**
 
-By acquiring, installing and using Pandora, you are agree to be bound with Pandora's Software License Agreement (or the "SLA"). To read and/or acquire a copy of, please visit [the SLA page for Pandora](https://danang-id.github.io/Pandora/sla).
+By acquiring, installing and using Pandora, you are agree to be bound with Pandora's Software License Agreement (or the "SLA"). To read and/or acquire a copy of, please visit [the SLA page for Pandora](https://pandora-security.github.io/Pandora/sla).
 
 ## Supported Applications
 

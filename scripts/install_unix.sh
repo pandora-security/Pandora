@@ -86,10 +86,20 @@ check_dependencies() {
 }
 
 request_privilege() {
+  exec sudo "$0" permission_flag "$TEMP_FILE" "$LATEST_RELEASE"
+  exit 1
+}
+
+check_privilege() {
   # shellcheck disable=SC2039
-  if [ "$UID" -ne 0 ] || [ "$(id -u)" -ne 0 ]; then
-    exec sudo "$0" "permission_flag" "$TEMP_FILE" "$LATEST_RELEASE"
-    exit 1
+  if [ -z "$UID" ] && [ "$UID" != "" ]; then
+    if [ "$UID" -ne 0 ]; then
+      request_privilege
+    fi
+  else
+    if [ "$(id -u)" -ne 0 ]; then
+      request_privilege
+    fi
   fi
 }
 
@@ -212,7 +222,7 @@ main() {
     get_latest_release
     RELEASE_URL="https://github.com/pandora-security/Pandora/releases/download/$LATEST_RELEASE/pandora-$DISTRIBUTION-$LATEST_RELEASE.zip"
     download_latest_release
-    request_privilege
+    check_privilege
   else
     println "User permission request... GRANTED"
     check_dependencies

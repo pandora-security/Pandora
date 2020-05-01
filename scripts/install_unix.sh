@@ -125,7 +125,7 @@ check_existing_pandora() {
 }
 
 request_privilege() {
-  exec sudo "$0" "$INSTALL_METHOD" "$LATEST_RELEASE" "$TEMP_FILE" 
+  sudo "$0" "$INSTALL_METHOD" "$LATEST_RELEASE" "$TEMP_FILE" 
   exit 1
 }
 

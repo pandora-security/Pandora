@@ -125,7 +125,7 @@ check_existing_pandora() {
 }
 
 request_privilege() {
-  exec sudo "$0" permission_flag "$TEMP_FILE" "$LATEST_RELEASE" "$INSTALL_METHOD"
+  exec sudo "$0" "$INSTALL_METHOD" "$LATEST_RELEASE" "$TEMP_FILE" 
   exit 1
 }
 
@@ -331,8 +331,8 @@ if [ -z "$1" ]; then
     esac
   done
 else
-  TEMP_FILE="$2"
-  LATEST_RELEASE="$3"
-  INSTALL_METHOD="$4"
+  INSTALL_METHOD="$1"
+  LATEST_RELEASE="$2"
+  TEMP_FILE="$3"
   main "$1"
 fi

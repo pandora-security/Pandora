@@ -27,13 +27,13 @@ You may install the latest available version of Pandora by running one of the fo
 **via `curl`**:
 
 ```bash
-sh -c "$(curl -fsSL https://pandora-security.github.io/scripts/install_unix.sh)"
+sh -c "$(curl -fsSL https://pandora-security.github.io/Pandora/scripts/install_unix.sh)"
 ```
 
 **via `wget`**:
 
 ```bash
-sh -c "$(wget -O- https://pandora-security.github.io/scripts/install_unix.sh)"
+sh -c "$(wget -O- https://pandora-security.github.io/Pandora/scripts/install_unix.sh)"
 ```
 
 ## License

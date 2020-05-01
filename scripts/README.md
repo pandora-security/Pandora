@@ -9,13 +9,13 @@ You may install the latest available version of Pandora by running one of the fo
 **via `curl`**:
 
 ```bash
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/pandora-security/Pandora/master/scripts/install_unix.sh)"
+sh -c "$(curl -fsSL https://pandora-security.github.io/Pandora/scripts/install_unix.sh)"
 ```
 
 **via `wget`**:
 
 ```bash
-sh -c "$(wget -O- https://raw.githubusercontent.com/pandora-security/Pandora/master/scripts/install_unix.sh)"
+sh -c "$(wget -O- https://pandora-security.github.io/Pandora/scripts/install_unix.sh)"
 ```
 
 Remember! For macOS, minimum version of macOS Sierra (10.12) is required. For Linux, any linux distribution running on 32-bit or 64-bit processor architecture is supported.

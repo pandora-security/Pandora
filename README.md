@@ -1,6 +1,6 @@
 # Pandora
 
-Pandora Security Box is a proprietary security library which helps certain pre-registered application to securely save private and sensitive information and data used by the application. Pandora uses military-graded encryption algorithm to cipher private information. It uses a safe secure box to save the security key which are unique for each application and each machine where the Pandora is installed.
+Pandora Security Box is a proprietary security library which helps certain pre-registered application to securely save private and sensitive information and data used by the application. Pandora uses a safe secure box to save the security key which are unique for each application and each machine where the Pandora is installed.
 
 ## Download & Install
 
@@ -27,13 +27,13 @@ You may install the latest available version of Pandora by running one of the fo
 **via `curl`**:
 
 ```bash
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/pandora-security/Pandora/master/scripts/install_unix.sh)"
+sh -c "$(curl -fsSL https://pandora-security.github.io/scripts/install_unix.sh)"
 ```
 
 **via `wget`**:
 
 ```bash
-sh -c "$(wget -O- https://raw.githubusercontent.com/pandora-security/Pandora/master/scripts/install_unix.sh)"
+sh -c "$(wget -O- https://pandora-security.github.io/scripts/install_unix.sh)"
 ```
 
 ## License
@@ -50,4 +50,4 @@ The list of supported application will be populated once Pandora stable version 
 
 To use Pandora as your application's security library, you have to register your application. A new registered application shall wait until the next release of Pandora which with it comes support for the newly registered application.
 
-Unfortunately, for this pre-stable version, Pandora will only accepts applications authored by our internal developers and a very limited application authored by external developers.  If you are interested to use Pandora, please submit your request to [danang.galuh.t@outlook.com](mailto:danang.galuh.t@outlook.com) and we will process your request within a week.
+For this pre-stable version, Pandora will only accepts applications authored by our internal developers and a very limited application authored by external developers.

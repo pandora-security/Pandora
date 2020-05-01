@@ -3,6 +3,7 @@
 GITHUB_ORG="pandora-security"
 GITHUB_REPO="Pandora"
 INSTALL_DIR="/usr/local/bin"
+INSTALL_METHOD=0
 
 println() {
   echo "$@"
@@ -12,7 +13,11 @@ print_header() {
   if [ -z "$1" ]; then
     clear
     println
-    println "============ Pandora installer for macOS and Linux ============"
+    if [ "$INSTALL_METHOD" -eq 0 ]; then
+      println "============ Pandora installer for macOS and Linux ============"
+    else
+      println "============= Pandora updater for macOS and Linux ============="
+    fi
     println
   fi
 }
@@ -25,7 +30,11 @@ check_dependencies() {
     println "FAILED [curl]"
     println
     println "Missing dependency: curl"
-    println "Installation aborted."
+    if [ "$INSTALL_METHOD" -eq 0 ]; then
+      println "Installation aborted."
+    else
+      println "Update aborted."
+    fi
     exit 1
   fi
   mktemp > /dev/null 2>&1
@@ -34,7 +43,11 @@ check_dependencies() {
     println "FAILED [mktemp]"
     println
     println "Missing dependency: mktemp"
-    println "Installation aborted."
+    if [ "$INSTALL_METHOD" -eq 0 ]; then
+      println "Installation aborted."
+    else
+      println "Update aborted."
+    fi
     exit 1
   fi
 #  nc -v > /dev/null 2>&1
@@ -61,7 +74,11 @@ check_dependencies() {
     println "FAILED [sudo]"
     println
     println "Missing dependency: sudo"
-    println "Installation aborted."
+    if [ "$INSTALL_METHOD" -eq 0 ]; then
+      println "Installation aborted."
+    else
+      println "Update aborted."
+    fi
     exit 1
   fi
   uname -v > /dev/null 2>&1
@@ -70,7 +87,11 @@ check_dependencies() {
     println "FAILED [uname]"
     println
     println "Missing dependency: uname"
-    println "Installation aborted."
+    if [ "$INSTALL_METHOD" -eq 0 ]; then
+      println "Installation aborted."
+    else
+      println "Update aborted."
+    fi
     exit 1
   fi
   unzip -v > /dev/null 2>&1
@@ -79,14 +100,32 @@ check_dependencies() {
     println "FAILED [unzip]"
     println
     println "Missing dependency: unzip"
-    println "Installation aborted."
+    if [ "$INSTALL_METHOD" -eq 0 ]; then
+      println "Installation aborted."
+    else
+      println "Update aborted."
+    fi
     exit 1
   fi
   println "OK"
 }
 
+check_existing_pandora() {
+  printf "Checking if Pandora has already been installed... "
+  pandora > /dev/null 2>&1
+  # shellcheck disable=SC2181
+  if [ $? -eq 0 ]; then
+    INSTALL_METHOD=1
+    PANDORA_EXIST="exist"
+  else
+    INSTALL_METHOD=0
+    PANDORA_EXIST="not exist"
+  fi
+  println "OK [$PANDORA_EXIST]"
+}
+
 request_privilege() {
-  exec sudo "$0" permission_flag "$TEMP_FILE" "$LATEST_RELEASE"
+  exec sudo "$0" permission_flag "$TEMP_FILE" "$LATEST_RELEASE" "$INSTALL_METHOD"
   exit 1
 }
 
@@ -138,7 +177,11 @@ get_system_information() {
     println "FAILED [$DISTRIBUTION]"
     println
     println "Your operating system is not supported by Pandora."
-    println "Installation aborted."
+    if [ "$INSTALL_METHOD" -eq 0 ]; then
+      println "Installation aborted."
+    else
+      println "Update aborted."
+    fi
     exit 1
   fi
   println "OK [$DISTRIBUTION]"
@@ -153,7 +196,11 @@ download_latest_release() {
     println "FAILED"
     println
     println "Download was interrupted. Please check your Internet connection."
-    println "Installation aborted."
+    if [ "$INSTALL_METHOD" -eq 0 ]; then
+      println "Installation aborted."
+    else
+      println "Update aborted."
+    fi
     exit 1
   fi
   PACKAGE_SIZE=$(wc -c < "$TEMP_FILE")
@@ -169,7 +216,11 @@ install_binary() {
     println "FAILED [rm]"
     println
     println "Failed to remove temporary file."
-    println "Installation aborted."
+    if [ "$INSTALL_METHOD" -eq 0 ]; then
+      println "Installation aborted."
+    else
+      println "Update aborted."
+    fi
     exit 1
   fi
   mkdir "$TEMP_DIR" > /dev/null 2>&1
@@ -178,7 +229,11 @@ install_binary() {
     println "FAILED [mkdir]"
     println
     println "Failed to make new temporary directory."
-    println "Installation aborted."
+    if [ "$INSTALL_METHOD" -eq 0 ]; then
+      println "Installation aborted."
+    else
+      println "Update aborted."
+    fi
     exit 1
   fi
   unzip "$TEMP_FILE" -d "$TEMP_DIR" > /dev/null 2>&1
@@ -187,7 +242,11 @@ install_binary() {
     println "FAILED [unzip]"
     println
     println "Failed to extract Pandora package."
-    println "Installation aborted."
+    if [ "$INSTALL_METHOD" -eq 0 ]; then
+      println "Installation aborted."
+    else
+      println "Update aborted."
+    fi
     exit 1
   fi
   cp -r "$TEMP_DIR"/pandora "$INSTALL_DIR"/pandora > /dev/null 2>&1
@@ -196,7 +255,11 @@ install_binary() {
     println "FAILED [cp]"
     println
     println "Failed to copy Pandora binary to $INSTALL_DIR."
-    println "Installation aborted."
+    if [ "$INSTALL_METHOD" -eq 0 ]; then
+      println "Installation aborted."
+    else
+      println "Update aborted."
+    fi
     exit 1
   fi
   println "OK"
@@ -211,7 +274,11 @@ clean_up() {
 cancel_install() {
     println
     println "Process cancelled by the user."
-    println "Installation aborted."
+    if [ "$INSTALL_METHOD" -eq 0 ]; then
+      println "Installation aborted."
+    else
+      println "Update aborted."
+    fi
     exit 1
 }
 
@@ -229,19 +296,32 @@ main() {
     install_binary
     clean_up
     println
-    println "Pandora $LATEST_RELEASE is successfully installed."
+    if [ "$INSTALL_METHOD" -eq 0 ]; then
+      println "Pandora $LATEST_RELEASE is successfully installed."
+    else
+      println "Pandora is successfully updated to $LATEST_RELEASE."
+    fi
   fi
 }
 
 if [ -z "$1" ]; then
+  check_existing_pandora
   check_dependencies
   println
-  println "Pandora installer may needs your permission to proceed installing"
+  if [ "$INSTALL_METHOD" -eq 0 ]; then
+    println "Pandora installer may needs your permission to proceed installing"
+  else
+    println "Pandora updater may needs your permission to proceed update"
+  fi
   println "Pandora. Please enter your password if asked."
   println
 
   while true; do
-    printf "Proceed to installation? [Y/n]: "
+    if [ "$INSTALL_METHOD" -eq 0 ]; then
+      printf "Proceed installation? [Y/n]: "
+    else
+      printf "Proceed update? [Y/n]: "
+    fi
     read -r yn
     case $yn in
       "" ) main; break;;
@@ -253,5 +333,6 @@ if [ -z "$1" ]; then
 else
   TEMP_FILE="$2"
   LATEST_RELEASE="$3"
+  INSTALL_METHOD="$4"
   main "$1"
 fi

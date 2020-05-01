@@ -1,5 +1,9 @@
 #!/bin/sh
 
+GITHUB_ORG="pandora-security"
+GITHUB_REPO="Pandora"
+INSTALL_DIR="/usr/local/bin"
+
 println() {
   echo "$@"
 }
@@ -15,7 +19,7 @@ print_header() {
 
 check_dependencies() {
   printf "Checking dependencies... "
-  curl -v foo > /dev/null 2>&1
+  curl -h > /dev/null 2>&1
   # shellcheck disable=SC2181
   if [ $? -ne 0 ]; then
     println "FAILED [curl]"
@@ -218,10 +222,6 @@ main() {
     println "Pandora $LATEST_RELEASE is successfully installed."
   fi
 }
-
-GITHUB_ORG="pandora-security"
-GITHUB_REPO="Pandora"
-INSTALL_DIR="/usr/local/bin"
 
 if [ -z "$1" ]; then
   check_dependencies

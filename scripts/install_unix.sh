@@ -87,7 +87,7 @@ check_dependencies() {
 
 request_privilege() {
   # shellcheck disable=SC2039
-  if [ "$UID" -ne 0 ]; then
+  if [ "$UID" -ne 0 ] || [ "$(id -u)" -ne 0 ]; then
     exec sudo "$0" "permission_flag" "$TEMP_FILE" "$LATEST_RELEASE"
     exit 1
   fi

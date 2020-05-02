@@ -10,16 +10,14 @@ println() {
 }
 
 print_header() {
-  if [ -z "$1" ]; then
-    clear
-    println
-    if [ "$INSTALL_METHOD" -eq 0 ]; then
-      println "============ Pandora installer for macOS and Linux ============"
-    else
-      println "============= Pandora updater for macOS and Linux ============="
-    fi
-    println
+  clear
+  println
+  if [ "$INSTALL_METHOD" -eq 0 ]; then
+    println "============== Pandora installer for macOS and Linux =============="
+  else
+    println "=============== Pandora updater for macOS and Linux ==============="
   fi
+  println
 }
 
 check_dependencies() {
@@ -125,19 +123,18 @@ check_existing_pandora() {
 }
 
 request_privilege() {
-  sudo "$0" "$INSTALL_METHOD" "$LATEST_RELEASE" "$TEMP_FILE" 
-  exit 1
+  sudo "$@"
 }
 
-check_privilege() {
+with_privilege() {
   # shellcheck disable=SC2039
   if [ -z "$UID" ] && [ "$UID" != "" ]; then
     if [ "$UID" -ne 0 ]; then
-      request_privilege
+      request_privilege "$@"
     fi
   else
     if [ "$(id -u)" -ne 0 ]; then
-      request_privilege
+      request_privilege "$@"
     fi
   fi
 }
@@ -190,7 +187,7 @@ get_system_information() {
 download_latest_release() {
   printf "Downloading Pandora package... "
   TEMP_FILE=$(mktemp)
-  curl -L "$RELEASE_URL" 2>/dev/null > "$TEMP_FILE"
+  with_privilege curl -L "$RELEASE_URL" 2>/dev/null > "$TEMP_FILE"
   # shellcheck disable=SC2181
   if [ $? -ne 0 ]; then
     println "FAILED"
@@ -210,7 +207,7 @@ download_latest_release() {
 install_binary() {
   printf "Installing Pandora to %s... " "$INSTALL_DIR"
   TEMP_DIR=$(mktemp)
-  rm -f "$TEMP_DIR" > /dev/null 2>&1
+  with_privilege rm -f "$TEMP_DIR" > /dev/null 2>&1
   # shellcheck disable=SC2181
   if [ $? -ne 0 ]; then
     println "FAILED [rm]"
@@ -223,7 +220,7 @@ install_binary() {
     fi
     exit 1
   fi
-  mkdir "$TEMP_DIR" > /dev/null 2>&1
+  with_privilege mkdir "$TEMP_DIR" > /dev/null 2>&1
   # shellcheck disable=SC2181
   if [ $? -ne 0 ]; then
     println "FAILED [mkdir]"
@@ -236,7 +233,7 @@ install_binary() {
     fi
     exit 1
   fi
-  unzip "$TEMP_FILE" -d "$TEMP_DIR" > /dev/null 2>&1
+  with_privilege unzip "$TEMP_FILE" -d "$TEMP_DIR" > /dev/null 2>&1
   # shellcheck disable=SC2181
   if [ $? -ne 0 ]; then
     println "FAILED [unzip]"
@@ -249,7 +246,7 @@ install_binary() {
     fi
     exit 1
   fi
-  cp -r "$TEMP_DIR"/pandora "$INSTALL_DIR"/pandora > /dev/null 2>&1
+  with_privilege cp -r "$TEMP_DIR"/pandora "$INSTALL_DIR"/pandora > /dev/null 2>&1
   # shellcheck disable=SC2181
   if [ $? -ne 0 ]; then
     println "FAILED [cp]"
@@ -267,7 +264,7 @@ install_binary() {
 
 clean_up() {
   printf "Cleaning up temporary files... "
-  rm -f "$TEMP_FILE"
+  with_privilege rm -f "$TEMP_FILE"
   println "OK"
 }
 
@@ -283,56 +280,45 @@ cancel_install() {
 }
 
 main() {
-  if [ -z "$1" ]; then
-    print_header "$@"
-    get_system_information
-    get_latest_release
-    RELEASE_URL="https://github.com/pandora-security/Pandora/releases/download/$LATEST_RELEASE/pandora-$DISTRIBUTION-$LATEST_RELEASE.zip"
-    download_latest_release
-    check_privilege
+  print_header
+  get_system_information
+  get_latest_release
+  RELEASE_URL="https://github.com/pandora-security/Pandora/releases/download/$LATEST_RELEASE/pandora-$DISTRIBUTION-$LATEST_RELEASE.zip"
+  with_privilege echo "User permission... GRANTED"
+  download_latest_release
+  check_dependencies
+  install_binary
+  clean_up
+  println
+  if [ "$INSTALL_METHOD" -eq 0 ]; then
+    println "Pandora $LATEST_RELEASE is successfully installed."
   else
-    println "User permission request... GRANTED"
-    check_dependencies
-    install_binary
-    clean_up
-    println
-    if [ "$INSTALL_METHOD" -eq 0 ]; then
-      println "Pandora $LATEST_RELEASE is successfully installed."
-    else
-      println "Pandora is successfully updated to $LATEST_RELEASE."
-    fi
+    println "Pandora is successfully updated to $LATEST_RELEASE."
   fi
 }
 
-if [ -z "$1" ]; then
-  check_existing_pandora
-  check_dependencies
-  println
-  if [ "$INSTALL_METHOD" -eq 0 ]; then
-    println "Pandora installer may needs your permission to proceed installing"
-  else
-    println "Pandora updater may needs your permission to proceed update"
-  fi
-  println "Pandora. Please enter your password if asked."
-  println
-
-  while true; do
-    if [ "$INSTALL_METHOD" -eq 0 ]; then
-      printf "Proceed installation? [Y/n]: "
-    else
-      printf "Proceed update? [Y/n]: "
-    fi
-    read -r yn
-    case $yn in
-      "" ) main; break;;
-      [Yy]* ) main; break;;
-      [Nn]* ) cancel_install;;
-      * ) println "Please answer yes or no.";;
-    esac
-  done
+check_existing_pandora
+check_dependencies
+println
+if [ "$INSTALL_METHOD" -eq 0 ]; then
+  println "Pandora installer may needs your permission to proceed installing"
 else
-  INSTALL_METHOD="$1"
-  LATEST_RELEASE="$2"
-  TEMP_FILE="$3"
-  main "$1"
+  println "Pandora updater may needs your permission to proceed update"
 fi
+println "Pandora. Please enter your password if asked."
+println
+
+while true; do
+  if [ "$INSTALL_METHOD" -eq 0 ]; then
+    printf "Proceed installation? [Y/n]: "
+  else
+    printf "Proceed update? [Y/n]: "
+  fi
+  read -r yn
+  case $yn in
+    "" ) main; break;;
+    [Yy]* ) main; break;;
+    [Nn]* ) cancel_install;;
+    * ) println "Please answer yes or no.";;
+  esac
+done

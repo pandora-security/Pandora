@@ -6,7 +6,7 @@ Pandora Security Box is a proprietary security library which helps certain pre-r
 
 [![Latest Version](https://img.shields.io/github/release/pandora-security/Pandora.svg)](https://pandora-security.github.io/Pandora/download)
 
-**Latest Available Version: v0.1.1 (06 May 2020)**
+**Latest Available Version: v0.1.2 (06 May 2020)**
 
 ### Windows
 

@@ -2,7 +2,7 @@
 
 [![Latest Version](https://img.shields.io/github/release/pandora-security/Pandora.svg)](https://pandora-security.github.io/Pandora/download)
 
-**Latest Available Version: v0.1.1 (06 May 2020)**
+**Latest Available Version: v0.1.2 (06 May 2020)**
 
 You may install the latest available version of Pandora by running one of the following commands in your terminal. You can install this via the command-line with either `curl` or `wget`.
 
